@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Server Site</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -12,10 +12,7 @@
     />
   </head>
   <body>
-    <!-- <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark"> -->
-    <!-- Navbar content -->
-    <!-- </nav> -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <!-- <nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
       <div class="container-fluid">
         <button
           class="navbar-toggler"
@@ -28,14 +25,14 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">Home</a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" aria-current="page" href="#">Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
+              <a class="nav-link" href="#">Register</a>
             </li>
             <li class="nav-item">
               <a class="nav-link disabled" aria-disabled="true">Disabled</a>
@@ -54,27 +51,126 @@
           </form>
         </div>
       </div>
+    </nav> -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Home</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Register</a>
+            </li>
+          </ul>
+          <form class="d-flex" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+            />
+            <button class="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
+      </div>
     </nav>
 
-    <!-- <div class="card text-bg-secondary mb-3" style="max-width: 18rem;">
-  <div class="card-header">Header</div>
-  <div class="card-body">
-    <h5 class="card-title">Secondary card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
-  </div> -->
+    <!-- Produk -->
+    <div class="container mt-4">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+        <!-- Card 1 -->
+        <div class="col">
+          <div class="card shadow rounded-3 h-100">
+            <img
+              src="https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/220/1022010_PE832396_S5.webp"
+              class="card-img-top"
+              alt="Office Desk"
+              style="height: 200px; object-fit: cover"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Office Desk</h5>
+              <p class="card-text">
+                Ideal for home or office with drawers and large space.
+              </p>
+            </div>
+          </div>
+        </div>
 
-    <nav aria-label="Page navigation example">
-      <ul class="pagination justify-content-end">
-        <li class="page-item disabled">
-          <a class="page-link">Previous</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#">Next</a>
-        </li>
-      </ul>
-    </nav>
+        <!-- Card 2 -->
+        <div class="col">
+          <div class="card shadow rounded-3 h-100">
+            <img
+              src="https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/247/0724712_PE734595_S5.webp"
+              class="card-img-top"
+              alt="Office Chair"
+              style="height: 200px; object-fit: cover"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Office Chair</h5>
+              <p class="card-text">
+                Premium ergonomic office chair with adjustable height.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="col">
+          <div class="card shadow rounded-3 h-100">
+            <img
+              src="https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/442/0644278_PE702556_S5.webp"
+              class="card-img-top"
+              alt="Bookshelf Rack"
+              style="height: 200px; object-fit: cover"
+            />
+            <div class="card-body">
+              <h5 class="card-title">Bookshelf Rack</h5>
+              <p class="card-text">
+                Minimalist bookshelf to organize your space with 5 tiers.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="col">
+          <div class="card shadow rounded-3 h-100">
+            <img
+              src="https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/455/0945534_PE797717_S5.webp"
+              class="card-img-top"
+              alt="TV Stand"
+              style="height: 200px; object-fit: cover"
+            />
+            <div class="card-body">
+              <h5 class="card-title">TV Stand</h5>
+              <p class="card-text">Sleek TV stand with storage compartments.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <nav aria-label="Page navigation example" class="my-4">
+        <ul class="pagination justify-content-end">
+          <li class="page-item disabled"><a class="page-link">Previous</a></li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+      </nav>
+    </div>
   </body>
 </html>
