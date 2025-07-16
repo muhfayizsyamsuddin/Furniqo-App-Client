@@ -4,7 +4,7 @@ export default function Login() {
       <div className="card shadow p-4" style={{ width: "100%", maxWidth: 400 }}>
         <div className="text-center mb-3">
           <img
-            src="./img/furniqo-logo-hitam-transparent.png"
+            src="/furniqo-logo-hitam-transparent.png"
             alt="Furniqo Logo"
             style={{ height: 60 }}
           />
