@@ -1,6 +1,9 @@
+import Sidebar from "../components/sidebar";
+
 export default function ListProduct() {
   return (
     <div className="d-flex">
+      <Sidebar />
       <div className="row">
         <div className="col-12 table-responsive">
           <div className="main-content flex-grow-1 p-4">

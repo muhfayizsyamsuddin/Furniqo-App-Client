@@ -1,6 +1,8 @@
 import "./App.css";
 import HomePage from "./pages/home";
 import Login from "./pages/login";
+import ListCategory from "./pages/list-category";
+import ListProduct from "./pages/list-product";
 import { BrowserRouter, Route, Routes } from "react-router";
 
 function App() {
@@ -11,7 +13,9 @@ function App() {
         <Route path="/pub/products/:id" />
         <Route path="/pub/categories" />
         <Route path="/login" element={<Login />} />
-        <Route path="/pub/register" />
+        <Route path="/register" />
+        <Route path="/categories" element={<ListCategory />} />
+        <Route path="/products" element={<ListProduct />} />
       </Routes>
     </BrowserRouter>
   );
