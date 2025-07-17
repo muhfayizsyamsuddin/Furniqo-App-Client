@@ -1,41 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "../components/sidebar";
 import ProductCard from "../components/product-card";
 import Pagination from "../components/pagination";
 import Footer from "../components/footer";
 import { useState } from "react";
+import axios from "axios";
 
 export default function HomePage() {
-  const product = [
-    {
-      name: "Office Desk",
-      price: "Rp 2.500.000",
-      category: "Office Furniture",
-      image:
-        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/220/1022010_PE832396_S5.webp",
-    },
-    {
-      name: "Office Desk",
-      price: "Rp 2.500.000",
-      category: "Bedroom",
-      image:
-        "https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/220/1022010_PE832396_S5.webp",
-    },
-  ];
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get(
+          "https://p2.khanz1.dev/apis/pub/products/products"
+        );
+        console.log("🚀 ~ useEffect ~ response:", response.data.data);
+        setProducts(response.data.data);
+      } catch (err) {
+        console.log("🚀 ~ fetchData ~ err:", err);
+      }
+    }
+    fetchData();
+  }, []);
   const categories = ["All", "Office Furniture", "Living Room", "Bedroom"];
-  const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const filteredProduct = product.filter((item) =>
-    selectedCategory === "All" ? true : item.category === selectedCategory
-  );
+  //   const [sortProducts, setSortProducts] = useState("");
 
-  const listProduct = filteredProduct.map((item, i) => (
+  //   const [selectedCategory, setSelectedCategory] = useState("All");
+
+  //   const filteredProduct = products
+  //     .filter((item) =>
+  //       selectedCategory === "All" ? true : item.category === selectedCategory
+  //     )
+  //     .sort((a, b) => {
+  //       return sortProducts === "price-asc"
+  //         ? new Date(b.createdAt) - new Date(a.createdAt)
+  //         : sortProducts === "price-desc"
+  //         ? new Date(a.createdAt) - new Date(b.createdAt)
+  //         : 0;
+  //     });
+
+  const listProduct = products.map((item, i) => (
     <div className="col-md-3 mb-3" key={i}>
       <ProductCard
         name={item.name}
         price={item.price}
         category={item.category}
-        image={item.image}
+        imageUrl={item.imgUrl}
       />
     </div>
   ));
@@ -43,10 +55,8 @@ export default function HomePage() {
   const listFilterCategory = categories.map((category, i) => (
     <li key={i}>
       <button
-        className={`dropdown-item ${
-          selectedCategory === category ? "active" : ""
-        }`}
-        onClick={() => setSelectedCategory(category)}
+        className={`dropdown-item`}
+        // onClick={() => setSelectedCategory(category)}
       >
         {category}
       </button>
@@ -76,7 +86,10 @@ export default function HomePage() {
 
         <div className="row mb-3">
           <div className="col-md-6">
-            <select className="form-select">
+            <select
+              className="form-select"
+              //   onChange={(e) => setSortProducts(e.target.value)}
+            >
               <option value="">Pilih berdasarkan</option>
               <option value="price-asc">Produk Terbaru</option>
               <option value="price-desc">Produk Terlama</option>

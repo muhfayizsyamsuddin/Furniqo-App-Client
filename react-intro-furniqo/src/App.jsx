@@ -3,6 +3,7 @@ import HomePage from "./pages/home";
 import Login from "./pages/login";
 import ListCategory from "./pages/list-category";
 import ListProduct from "./pages/list-product";
+import AddUser from "./pages/add-user";
 import { BrowserRouter, Route, Routes } from "react-router";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/register" />
         <Route path="/categories" element={<ListCategory />} />
         <Route path="/products" element={<ListProduct />} />
+        <Route path="/add-user" element={<AddUser />} />
       </Routes>
     </BrowserRouter>
   );

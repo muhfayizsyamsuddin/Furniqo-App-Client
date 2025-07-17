@@ -1,5 +1,6 @@
 // import logo from ''
 import React from "react";
+import { Link } from "react-router";
 
 function Sidebar() {
   return (
@@ -18,28 +19,28 @@ function Sidebar() {
           placeholder="Cari produk..."
         />
         {/* Navigation */}
-        <a href="index.html" className="active">
+        <Link to="/pub/products" className="active">
           <i className="bi bi-house" /> Home
-        </a>
-        <a href="login.html">
+        </Link>
+        <Link to="/login">
           <i className="bi bi-box-arrow-in-right" /> Login
-        </a>
-        <a href="register.html">
+        </Link>
+        <Link to="register.html">
           <i className="bi bi-pencil-square" /> Register
-        </a>
-        <a href="list-product.html">
+        </Link>
+        <Link to="/products">
           <i className="bi bi-pencil-square" /> Product List
-        </a>
-        <a href="list-category.html">
+        </Link>
+        <Link to="/categories">
           <i className="bi bi-pencil-square" /> Category List
-        </a>
-        <a href="add-user.html">
+        </Link>
+        <Link to="/add-user">
           <i className="bi bi-pencil-square" /> Add User
-        </a>
+        </Link>
         <div className="mt-auto text-center">
-          <a href="register.html" className="text-danger">
+          <Link to="/login" className="text-danger">
             <i className="bi bi-box-arrow-right" /> Logout
-          </a>
+          </Link>
         </div>
       </div>
     </>
