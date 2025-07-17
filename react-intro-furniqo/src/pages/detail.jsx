@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Sidebar from "../components/sidebar";
-import ProductCard from "../components/product-card";
 import Pagination from "../components/pagination";
 import Footer from "../components/footer";
 import { useState } from "react";

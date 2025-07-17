@@ -3,6 +3,38 @@ import React from "react";
 import { Link } from "react-router";
 
 function Sidebar() {
+  const navMenus = [
+    {
+      to: "/pub/products",
+      icon: "bi-house",
+      label: "Home",
+    },
+    {
+      to: "/login",
+      icon: "bi-box-arrow-in-right",
+      label: "Login",
+    },
+    {
+      to: "/register",
+      icon: "bi-pencil-square",
+      label: "Register",
+    },
+    {
+      to: "/products",
+      icon: "bi-box",
+      label: "Product List",
+    },
+    {
+      to: "/categories",
+      icon: "bi-tags",
+      label: "Category List",
+    },
+    {
+      to: "/add-user",
+      icon: "bi-person-plus",
+      label: "Add User",
+    },
+  ];
   return (
     <>
       {/* SIDEBAR */}
@@ -20,25 +52,12 @@ function Sidebar() {
           //   onChange={}
         />
         {/* Navigation */}
-        <Link to="/pub/products" className="active">
-          <i className="bi bi-house" /> Home
-        </Link>
-        <Link to="/login">
-          <i className="bi bi-box-arrow-in-right" /> Login
-        </Link>
-        <Link to="register.html">
-          <i className="bi bi-pencil-square" /> Register
-        </Link>
-        <Link to="/products">
-          <i className="bi bi-pencil-square" /> Product List
-        </Link>
-        <Link to="/categories">
-          <i className="bi bi-pencil-square" /> Category List
-        </Link>
-        <Link to="/add-user">
-          <i className="bi bi-pencil-square" /> Add User
-        </Link>
-        <div className="mt-auto text-center">
+        {navMenus.map((menu, i) => (
+          <Link key={i} to={menu.to} className="nav-link">
+            <i className="{`bi ${menu.icon}`}">{menu.label}</i>
+          </Link>
+        ))}
+        <div className="mt-auto text-center mb-3">
           <Link to="/login" className="text-danger">
             <i className="bi bi-box-arrow-right" /> Logout
           </Link>

@@ -20,7 +20,9 @@ function ProductCard({ id, name, price, imageUrl, category }) {
             <p className="text-muted mb-1">
               Rp {price.toLocaleString("id-ID")}
             </p>
-            <span className="badge bg-secondary">{category.name}</span>
+            <div className="mt-auto">
+              <span className="badge bg-secondary">{category.name}</span>
+            </div>
           </div>
         </div>
       </Link>
