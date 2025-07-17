@@ -9,14 +9,15 @@ function Sidebar() {
       <div className="sidebar">
         <div className="logo text-center ms-3">
           <a href="index.html">
-            <img src="furniqo-high-resolution-logo-transparent.png" />
+            <img src="/furniqo-high-resolution-logo-transparent.png" />
           </a>
         </div>
         {/* Search */}
         <input
           type="text"
           className="form-control search-input"
-          placeholder="Cari produk..."
+          placeholder="Search product..."
+          //   onChange={}
         />
         {/* Navigation */}
         <Link to="/pub/products" className="active">

@@ -1,5 +1,6 @@
 import "./App.css";
 import HomePage from "./pages/home";
+import Detail from "./pages/detail";
 import Login from "./pages/login";
 import ListCategory from "./pages/list-category";
 import ListProduct from "./pages/list-product";
@@ -11,7 +12,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/pub/products" element={<HomePage />} />
-        <Route path="/pub/products/:id" />
+        <Route path="/pub/products/:id" element={<Detail />} />
         <Route path="/pub/categories" />
         <Route path="/login" element={<Login />} />
         <Route path="/register" />

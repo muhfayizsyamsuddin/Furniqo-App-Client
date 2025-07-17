@@ -8,19 +8,22 @@ import axios from "axios";
 
 export default function HomePage() {
   const [products, setProducts] = useState([]);
+  //   const [searchText, setSearchText] = useState("");
+
+  async function fetchData() {
+    try {
+      const response = await axios.get(
+        "https://p2.khanz1.dev/apis/pub/products/products"
+        // + searchText
+      );
+      console.log("🚀 ~ useEffect ~ response:", response.data.data);
+      setProducts(response.data.data);
+    } catch (err) {
+      console.log("🚀 ~ fetchData ~ err:", err);
+    }
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get(
-          "https://p2.khanz1.dev/apis/pub/products/products"
-        );
-        console.log("🚀 ~ useEffect ~ response:", response.data.data);
-        setProducts(response.data.data);
-      } catch (err) {
-        console.log("🚀 ~ fetchData ~ err:", err);
-      }
-    }
     fetchData();
   }, []);
   const categories = ["All", "Office Furniture", "Living Room", "Bedroom"];
@@ -44,6 +47,7 @@ export default function HomePage() {
   const listProduct = products.map((item, i) => (
     <div className="col-md-3 mb-3" key={i}>
       <ProductCard
+        id={item.id}
         name={item.name}
         price={item.price}
         category={item.category}
@@ -65,7 +69,10 @@ export default function HomePage() {
 
   return (
     <div className="d-flex">
-      <Sidebar />
+      <Sidebar
+      // value={searchText}
+      // onChange={(e) => setSearchText(e.target.value)}
+      />
       <div className="main-content flex-grow-1 p-4">
         <div className="container my-4">
           <h2 className="mb-4">Produk</h2>

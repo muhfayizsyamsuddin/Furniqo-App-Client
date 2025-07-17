@@ -1,8 +1,13 @@
-function ProductCard({ name, price, imageUrl, category }) {
+import { Link } from "react-router";
+
+function ProductCard({ id, name, price, imageUrl, category }) {
   return (
     <>
       {/* MAIN CONTENT */}
-      <a href="detail.html" className="text-decoration-none text-dark">
+      <Link
+        to={`/pub/products/${id}`}
+        className="text-decoration-none text-dark"
+      >
         <div className="card h-100">
           <img
             src={imageUrl}
@@ -18,7 +23,7 @@ function ProductCard({ name, price, imageUrl, category }) {
             <span className="badge bg-secondary">{category.name}</span>
           </div>
         </div>
-      </a>
+      </Link>
     </>
   );
 }
