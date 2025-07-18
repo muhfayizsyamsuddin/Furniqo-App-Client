@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Sidebar from "../components/sidebar";
 import ProductCard from "../components/product-card";
 import Pagination from "../components/pagination";
 import Footer from "../components/footer";
@@ -68,6 +69,10 @@ export default function HomePage() {
 
   return (
     <div className="d-flex">
+      <Sidebar
+      // value={searchText}
+      // onChange={(e) => setSearchText(e.target.value)}
+      />
       <div className="main-content flex-grow-1 p-4">
         <div className="container my-4">
           <h2 className="mb-4">Produk</h2>

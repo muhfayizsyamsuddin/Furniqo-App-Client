@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Sidebar from "../components/sidebar";
 import Pagination from "../components/pagination";
 import Footer from "../components/footer";
 import { useState } from "react";
@@ -29,6 +30,7 @@ export default function Detail() {
   }
   return (
     <div className="d-flex">
+      <Sidebar />
       <div className="main-content flex-grow-1 d-flex flex-column min-vh-100">
         <main className="flex-grow-1 p-4">
           <div className="container">

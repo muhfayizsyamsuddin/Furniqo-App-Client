@@ -5,11 +5,10 @@ import Sidebar from "../components/sidebar";
 export default function ListProduct() {
   return (
     <div className="d-flex">
-      <Sidebar />
       <div className="row">
         <div className="col-12 table-responsive">
           <div className="main-content flex-grow-1 p-4">
-            <h1 className="mb-2">List Product</h1>
+            <h1 className="mb-2">List of Products</h1>
             <div className="d-flex justify-content-end mb-2">
               <button
                 className="btn btn-warning d-flex align-items-center gap-2 shadow-sm"

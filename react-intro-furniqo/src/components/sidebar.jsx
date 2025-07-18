@@ -34,7 +34,7 @@ function Sidebar() {
     {
       to: "/add-user",
       icon: "bi-person-plus",
-      label: "Add User",
+      label: "Create Staff",
     },
   ];
   return (

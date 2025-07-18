@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, Navigate, useNavigate } from "react-router";
 import { api } from "../helpers/http-client";
 
 export default function Login() {
@@ -20,11 +20,15 @@ export default function Login() {
       console.log("🚀 ~ handleLogin ~ access_token:", access_token);
 
       localStorage.setItem("access_token", access_token);
-      navigate("/pub/products");
+      navigate("/products");
     } catch (err) {
       console.log("🚀 ~ handleLogin ~ err:", err);
     }
   };
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    return <Navigate to={"/products"} />;
+  }
   return (
     <div className="container d-flex align-items-center justify-content-center min-vh-100">
       <div className="card shadow p-4" style={{ width: "100%", maxWidth: 400 }}>
@@ -78,10 +82,10 @@ export default function Login() {
             <i className="bi bi-box-arrow-in-right" /> Login
           </button>
         </form>
-        <p className="text-center mt-3 text-light">
+        {/* <p className="text-center mt-3 text-light">
           Don't have an account?
           <Link to="/pub/products">Register now</Link>
-        </p>
+        </p> */}
       </div>
     </div>
   );

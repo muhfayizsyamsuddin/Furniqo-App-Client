@@ -4,10 +4,9 @@ import Sidebar from "../components/sidebar";
 export default function ListCategory() {
   return (
     <div className="d-flex min-vh-100">
-      <Sidebar />
       {/* <div className="row"> */}
       <div className="main-content flex-grow-1 p-4">
-        <h1 className="text-light mb-2">List Category</h1>
+        <h1 className="text-light mb-2">List of Categories</h1>
         <div className="container">
           <div className="col-6 table-responsive">
             <table className="table table-dark tabel-hover caption-top align-middle rounded overflow-hidden">

@@ -13,12 +13,12 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AuthenticatedLayout />}>
-          <Route path="pub/products" element={<HomePage />} />
-          <Route path="pub/products/:id" element={<Detail />} />
           <Route path="categories" element={<ListCategory />} />
           <Route path="products" element={<ListProduct />} />
           <Route path="add-user" element={<AddUser />} />
         </Route>
+        <Route path="/pub/products" element={<HomePage />} />
+        <Route path="/pub/products/:id" element={<Detail />} />
         <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
