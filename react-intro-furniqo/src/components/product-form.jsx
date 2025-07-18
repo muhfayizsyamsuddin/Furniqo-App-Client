@@ -2,6 +2,7 @@ import { useState } from "react";
 import { api } from "../helpers/http-client";
 // import { useNavigate } from "react-router";
 // import {Modal}
+/* global bootstrap */
 
 export default function ProductForm({ onSuccess }) {
   //   const navigate = useNavigate();
