@@ -1,8 +1,28 @@
+import { useEffect, useState } from "react";
 import Footer from "../components/footer";
 import Sidebar from "../components/sidebar";
+import { api } from "../helpers/http-client";
+import ProductForm from "../components/product-form";
 // import { useState } from "react";
 
 export default function ListProduct() {
+  const [products, setProducts] = useState([]);
+
+  async function fetchData() {
+    try {
+      const response = await api.get("/apis/products/products", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+      setProducts(response.data.data);
+    } catch (err) {
+      console.log("🚀 ~ fetchData ~ err:", err);
+    }
+  }
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="d-flex">
       <div className="row">
@@ -35,278 +55,81 @@ export default function ListProduct() {
                 </tr>
               </thead>
               <tbody id="table-product">
-                <tr>
-                  <td>
-                    <img
-                      src="https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/220/1022010_PE832396_S5.webp"
-                      className="img-fluid"
-                      style={{ width: 150, height: "auto" }}
-                    />
-                  </td>
-                  <td>Office Desk</td>
-                  <td>
-                    Ideal for home or office workspace with spacious surface and
-                    drawers.
-                  </td>
-                  <td>400000</td>
-                  <td>15</td>
-                  <td>Living Room</td>
-                  <td>susanti@gmail.com</td>
-                  <td>
-                    <span className="d-flex">
-                      {/* Edit */}
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-primary ms-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editModal"
-                        title="Edit"
+                {products.map((product) => (
+                  <tr key={product.id}>
+                    <td>
+                      <img
+                        src={product.imgUrl}
+                        className="img-fluid"
+                        style={{ width: 150, height: "auto" }}
+                      />
+                    </td>
+                    <td>{product.name}</td>
+                    <td>
+                      <div
+                        className="text-truncate"
+                        style={{
+                          maxWidth: "200px",
+                          //   maxHeight: "100px",
+                          //   overflow: "auto",
+                          whiteSpace: "pre-wrap",
+                        }}
                       >
-                        <span className="material-symbols-outlined">edit</span>
-                      </button>
-                      {/* Upload Image */}
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-secondary ms-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#uploadModal"
-                        title="Upload Image"
-                      >
-                        <span className="material-symbols-outlined">image</span>
-                      </button>
-                      {/* Delete */}
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-danger ms-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteModal"
-                        title="Delete"
-                      >
-                        <span className="material-symbols-outlined">
-                          delete
-                        </span>
-                      </button>
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img
-                      src="https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/247/0724712_PE734595_S5.webp"
-                      className="img-fluid"
-                      style={{ width: 100, height: "auto" }}
-                    />
-                  </td>
-                  <td>Office Chair</td>
-                  <td>
-                    Premium ergonomic office chair with adjustable height.
-                  </td>
-                  <td>300000</td>
-                  <td>8</td>
-                  <td>Bedroom</td>
-                  <td>budiono@gmail.com</td>
-                  <td>
-                    <span className="d-flex">
-                      {/* Edit */}
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-primary ms-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editModal"
-                        title="Edit"
-                      >
-                        <span className="material-symbols-outlined">edit</span>
-                      </button>
-                      {/* Upload Image */}
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-secondary ms-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#uploadModal"
-                        title="Upload Image"
-                      >
-                        <span className="material-symbols-outlined">image</span>
-                      </button>
-                      {/* Delete */}
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-danger ms-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteModal"
-                        title="Delete"
-                      >
-                        <span className="material-symbols-outlined">
-                          delete
-                        </span>
-                      </button>
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <img
-                      src="https://d2xjmi1k71iy2m.cloudfront.net/dairyfarm/id/images/442/0644278_PE702556_S5.webp"
-                      className="img-fluid"
-                      style={{ width: 100, height: "auto" }}
-                    />
-                  </td>
-                  <td>Bookshelf Rack</td>
-                  <td>
-                    Minimalist bookshelf to organize your space with 5 tiers.
-                  </td>
-                  <td>150000</td>
-                  <td>23</td>
-                  <td>Office Furniture</td>
-                  <td>abdul@gmail.com</td>
-                  <td>
-                    <span className="d-flex">
-                      {/* Edit */}
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-primary ms-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editModal"
-                        title="Edit"
-                      >
-                        <span className="material-symbols-outlined">edit</span>
-                      </button>
-                      {/* Upload Image */}
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-secondary ms-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#uploadModal"
-                        title="Upload Image"
-                      >
-                        <span className="material-symbols-outlined">image</span>
-                      </button>
-                      {/* Delete */}
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-danger ms-1"
-                        data-bs-toggle="modal"
-                        data-bs-target="#deleteModal"
-                        title="Delete"
-                      >
-                        <span className="material-symbols-outlined">
-                          delete
-                        </span>
-                      </button>
-                    </span>
-                  </td>
-                </tr>
+                        {product.description}
+                      </div>
+                    </td>
+                    <td>{product.price}</td>
+                    <td>{product.stock}</td>
+                    <td>{product.category.name}</td>
+                    <td>{product.author.username}</td>
+                    <td>
+                      <span className="d-flex">
+                        {/* Edit */}
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-primary ms-1"
+                          data-bs-toggle="modal"
+                          data-bs-target="#editModal"
+                          title="Edit"
+                        >
+                          <span className="material-symbols-outlined">
+                            edit
+                          </span>
+                        </button>
+                        {/* Upload Image */}
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-secondary ms-1"
+                          data-bs-toggle="modal"
+                          data-bs-target="#uploadModal"
+                          title="Upload Image"
+                        >
+                          <span className="material-symbols-outlined">
+                            image
+                          </span>
+                        </button>
+                        {/* Delete */}
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-danger ms-1"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deleteModal"
+                          title="Delete"
+                        >
+                          <span className="material-symbols-outlined">
+                            delete
+                          </span>
+                        </button>
+                      </span>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
       </div>
-      <div
-        className="modal fade"
-        id="addModal"
-        tabIndex={-1}
-        aria-labelledby="addModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-lg">
-          <div className="modal-content">
-            <form id="form-add-product">
-              <div className="modal-header">
-                <h5 className="modal-title" id="addModalLabel">
-                  Add Product
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                />
-              </div>
-              <div className="modal-body">
-                <div className="mb-3">
-                  <label htmlFor="product-name" className="form-label">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="product-name"
-                    required=""
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="product-category" className="form-label">
-                    Category
-                  </label>
-                  <select
-                    className="form-select"
-                    id="product-category"
-                    required=""
-                  >
-                    <option disabled="" selected="">
-                      -- Select Category --
-                    </option>
-                    <option>Office</option>
-                    <option>Workspace</option>
-                    <option>Storage</option>
-                  </select>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="product-desc" className="form-label">
-                    Description
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="product-desc"
-                    required=""
-                  />
-                </div>
-                <div className="row">
-                  <div className="col-md-6 mb-3">
-                    <label htmlFor="product-stock" className="form-label">
-                      Stock
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="product-stock"
-                      required=""
-                    />
-                  </div>
-                  <div className="col-md-6 mb-3">
-                    <label htmlFor="product-price" className="form-label">
-                      Price
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="product-price"
-                      required=""
-                    />
-                  </div>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="product-image" className="form-label">
-                    Image URL
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="product-image"
-                  />
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button className="btn btn-secondary" data-bs-dismiss="modal">
-                  Cancel
-                </button>
-                <button className="btn btn-success" type="submit">
-                  Add Product
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+      <ProductForm />
       {/* Modal: Edit Product */}
       <div
         className="modal fade"
@@ -348,7 +171,7 @@ export default function ListProduct() {
                     id="edit-product-category"
                     required=""
                   >
-                    <option disabled="" selected="">
+                    <option value="" disabled>
                       -- Select Category --
                     </option>
                     <option>Office</option>

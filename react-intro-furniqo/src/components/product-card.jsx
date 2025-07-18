@@ -13,7 +13,7 @@ function ProductCard({ id, name, price, imageUrl, category }) {
             src={imageUrl}
             className="img-fluid product-image shadow-sm"
             alt="Produk"
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "cover", height: 250 }}
           />
           <div className="card-body">
             <h5 className="card-title text-align">{name}</h5>
@@ -23,8 +23,10 @@ function ProductCard({ id, name, price, imageUrl, category }) {
                 currency: "IDR",
               })}
             </p>
-            <div className="mt-auto">
-              <span className="badge bg-secondary">{category.name}</span>
+            <div className="mb-auto">
+              <span className="badge bg-secondary mt-auto">
+                {category.name}
+              </span>
             </div>
           </div>
         </div>
