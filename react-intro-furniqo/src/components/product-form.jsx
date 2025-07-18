@@ -1,40 +1,72 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../helpers/http-client";
 // import { useNavigate } from "react-router";
 // import {Modal}
 /* global bootstrap */
 
-export default function ProductForm({ onSuccess }) {
+export default function ProductForm({ editProduct, type, onSuccess }) {
   //   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imgUrl, setImgUrl] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  //   const { id } = useParams();
+
+  useEffect(() => {
+    if (type === "edit" && editProduct) {
+      setName(editProduct.name);
+      setDescription(editProduct.description);
+      setPrice(editProduct.price);
+      setStock(editProduct.stock);
+      setImgUrl(editProduct.imgUrl || "");
+      setCategoryId(editProduct.categoryId);
+      console.log("editPoduct", editProduct);
+    } else {
+      setName("");
+      setDescription("");
+      setPrice("");
+      setStock("");
+      setImgUrl("");
+      setCategoryId("");
+    }
+  }, [type, editProduct]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post(
-        "/apis/products/products",
-        {
-          name,
-          description,
-          price: Number(price),
-          stock: Number(stock),
-          imgUrl: imageUrl,
-          categoryId: Number(categoryId),
-        },
-        {
+      const dataProduct = {
+        name,
+        description,
+        price: Number(price),
+        stock: Number(stock),
+        imgUrl,
+        categoryId: Number(categoryId),
+      };
+      if (type === "edit") {
+        await api.put(
+          `/apis/products/products/${editProduct.id}`,
+          dataProduct,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+      } else {
+        await api.post("/apis/products/products", dataProduct, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
-        }
-      );
+        });
+      }
       if (onSuccess) {
         onSuccess();
       }
-      const modalElement = document.getElementById("addModal");
+      const modalElement = document.getElementById(
+        type === "edit" ? "editModal" : "addModal"
+      );
       const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
       modal.hide();
       //   navigate("/products");
@@ -45,17 +77,21 @@ export default function ProductForm({ onSuccess }) {
   return (
     <div
       className="modal fade"
-      id="addModal"
+      id={type === "edit" ? "editModal" : "addModal"}
       tabIndex={-1}
       aria-labelledby="addModalLabel"
       aria-hidden="true"
     >
-      <div className="modal-dialog modal-lg">
+      <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div className="modal-content">
-          <form onSubmit={handleSubmit} id="form-add-product">
+          <form
+            onSubmit={handleSubmit}
+            id="form-add-product"
+            className="from-wrapper"
+          >
             <div className="modal-header">
-              <h5 className="modal-title" id="addModalLabel">
-                Add Product
+              <h5 className="modal-title">
+                {type === "edit" ? "Edit Product" : "Add Product"}
               </h5>
               <button
                 type="button"
@@ -127,29 +163,27 @@ export default function ProductForm({ onSuccess }) {
                   type="text"
                   className="form-control"
                   id="product-image"
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
+                  value={imgUrl}
+                  onChange={(e) => setImgUrl(e.target.value)}
                 />
               </div>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="product-category" className="form-label">
-                Category
-              </label>
-              <select
-                className="form-select"
-                id="product-category"
-                required=""
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-              >
-                <option value="" disabled>
-                  -- Select Category --
-                </option>
-                <option value={1}>Office</option>
-                <option value={2}>Workspace</option>
-                <option value={3}>Storage</option>
-              </select>
+              <div className="mb-3">
+                <label htmlFor="product-category" className="form-label">
+                  Category
+                </label>
+                <select
+                  className="form-select"
+                  id="product-category"
+                  required=""
+                  value={categoryId}
+                  onChange={(e) => setCategoryId(e.target.value)}
+                >
+                  <option value="">Select Category</option>
+                  <option value={1}>Office</option>
+                  <option value={2}>Workspace</option>
+                  <option value={3}>Storage</option>
+                </select>
+              </div>
             </div>
             <div className="modal-footer">
               <button
@@ -160,7 +194,7 @@ export default function ProductForm({ onSuccess }) {
                 Cancel
               </button>
               <button className="btn btn-success" type="submit">
-                Add Product
+                {type === "edit" ? "Update Product" : "Add Product"}
               </button>
             </div>
           </form>

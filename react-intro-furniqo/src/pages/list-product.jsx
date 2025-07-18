@@ -3,10 +3,13 @@ import Footer from "../components/footer";
 import Sidebar from "../components/sidebar";
 import { api } from "../helpers/http-client";
 import ProductForm from "../components/product-form";
+// import { useParams } from "react-router";
 // import { useState } from "react";
 
-export default function ListProduct({ onSuccess }) {
+export default function ListProduct() {
+  // const { id } = useParams();
   const [products, setProducts] = useState([]);
+  const [editProduct, setEditProduct] = useState(null);
 
   async function fetchData() {
     try {
@@ -91,6 +94,7 @@ export default function ListProduct({ onSuccess }) {
                           data-bs-toggle="modal"
                           data-bs-target="#editModal"
                           title="Edit"
+                          onClick={() => setEditProduct(product)}
                         >
                           <span className="material-symbols-outlined">
                             edit
@@ -129,7 +133,121 @@ export default function ListProduct({ onSuccess }) {
           </div>
         </div>
       </div>
-      <ProductForm onSuccess={fetchData} />
+      <ProductForm type="add" onSuccess={fetchData} />
+      <ProductForm
+        type="edit"
+        editProduct={editProduct}
+        onSuccess={() => {
+          fetchData();
+          setEditProduct(null);
+        }}
+      />
+      {/* <div
+        className="modal fade"
+        id="editModal"
+        tabIndex={-1}
+        aria-labelledby="editModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-lg">
+          <div className="modal-content">
+            <form id="form-edit-product">
+              <div className="modal-header">
+                <h5 className="modal-title">Edit Product</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                />
+              </div>
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label htmlFor="edit-product-name" className="form-label">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="edit-product-name"
+                    required=""
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="edit-product-category" className="form-label">
+                    Category
+                  </label>
+                  <select
+                    className="form-select"
+                    id="edit-product-category"
+                    required=""
+                  >
+                    <option value="" disabled>
+                      -- Select Category --
+                    </option>
+                    <option>Office</option>
+                    <option>Workspace</option>
+                    <option>Storage</option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="edit-product-desc" className="form-label">
+                    Description
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="edit-product-desc"
+                    required=""
+                  />
+                </div>
+                <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="edit-product-stock" className="form-label">
+                      Stock
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="edit-product-stock"
+                      required=""
+                    />
+                  </div>
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="edit-product-price" className="form-label">
+                      Price
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="edit-product-price"
+                      required=""
+                    />
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="edit-product-image" className="form-label">
+                    Image URL
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="edit-product-image"
+                  />
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button className="btn btn-secondary" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button className="btn btn-primary" type="submit">
+                  Update Product
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div> */}
       {/* Modal: Upload Image */}
       <div
         className="modal fade"

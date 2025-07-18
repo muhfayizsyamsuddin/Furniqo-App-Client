@@ -15,6 +15,7 @@ function App() {
         <Route path="/" element={<AuthenticatedLayout />}>
           <Route path="categories" element={<ListCategory />} />
           <Route path="products" element={<ListProduct />} />
+          {/* <Route path="products/:id" element={<Detail />} /> */}
           <Route path="add-user" element={<AddUser />} />
         </Route>
         <Route path="/pub/products" element={<HomePage />} />
