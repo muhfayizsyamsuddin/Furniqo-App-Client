@@ -6,19 +6,20 @@ import ListCategory from "./pages/list-category";
 import ListProduct from "./pages/list-product";
 import AddUser from "./pages/add-user";
 import { BrowserRouter, Route, Routes } from "react-router";
+import AuthenticatedLayout from "./layout/authenticated-layout";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/pub/products" element={<HomePage />} />
-        <Route path="/pub/products/:id" element={<Detail />} />
-        <Route path="/pub/categories" />
+        <Route path="/" element={<AuthenticatedLayout />}>
+          <Route path="pub/products" element={<HomePage />} />
+          <Route path="pub/products/:id" element={<Detail />} />
+          <Route path="categories" element={<ListCategory />} />
+          <Route path="products" element={<ListProduct />} />
+          <Route path="add-user" element={<AddUser />} />
+        </Route>
         <Route path="/login" element={<Login />} />
-        <Route path="/register" />
-        <Route path="/categories" element={<ListCategory />} />
-        <Route path="/products" element={<ListProduct />} />
-        <Route path="/add-user" element={<AddUser />} />
       </Routes>
     </BrowserRouter>
   );

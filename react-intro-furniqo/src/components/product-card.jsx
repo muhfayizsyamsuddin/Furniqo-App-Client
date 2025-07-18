@@ -8,7 +8,7 @@ function ProductCard({ id, name, price, imageUrl, category }) {
         to={`/pub/products/${id}`}
         className="text-decoration-none text-dark"
       >
-        <div className="card h-100">
+        <div className="card  h-100">
           <img
             src={imageUrl}
             className="img-fluid product-image shadow-sm"
@@ -16,9 +16,12 @@ function ProductCard({ id, name, price, imageUrl, category }) {
             style={{ objectFit: "cover" }}
           />
           <div className="card-body">
-            <h5 className="card-title">{name}</h5>
-            <p className="text-muted mb-1">
-              Rp {price.toLocaleString("id-ID")}
+            <h5 className="card-title text-align">{name}</h5>
+            <p className="text-light">
+              {price.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+              })}
             </p>
             <div className="mt-auto">
               <span className="badge bg-secondary">{category.name}</span>

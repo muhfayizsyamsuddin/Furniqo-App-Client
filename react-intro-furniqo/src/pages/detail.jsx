@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import Sidebar from "../components/sidebar";
 import Pagination from "../components/pagination";
 import Footer from "../components/footer";
 import { useState } from "react";
@@ -29,44 +28,53 @@ export default function Detail() {
     return <div className="text-center p-4">Loading...</div>;
   }
   return (
-    <div>
-      <Sidebar />
-      <div className="main-content flex-grow-1 p-4">
-        <div className="container">
-          <h4 className="mb-4 fw-semibold">Product Detail</h4>
-          <div className="row g-4 align-items-start">
-            {/* Gambar Produk */}
-            <div className="col-md-6">
-              <img
-                src={productDetail.imgUrl}
-                alt={productDetail.name}
-                className="img-fluid product-image rounded shadow-sm w-100"
-              />
-            </div>
-            {/* Detail Produk */}
-            <div className="col-md-6">
-              <h2 className="fw-bold mb-2">{productDetail.name}</h2>
-              {/* <p className="text-muted mb-1"> */}
-              <p className="badge bg-secondary mb-2">
-                Category: {productDetail.category.name}
-              </p>
-              <p className="fs-4 text-success fw-semibold">
-                Rp {productDetail.price.toLocaleString("id-ID")}
-              </p>
-              <div className="border rounded p-3 mb-3 bg-light ">
-                <p className="small mb-0">{productDetail.description}</p>
+    <div className="d-flex">
+      <div className="main-content flex-grow-1 d-flex flex-column min-vh-100">
+        <main className="flex-grow-1 p-4">
+          <div className="container">
+            <h4 className="mb-4 fw-semibold text-align">Product Detail</h4>
+            <div className="row g-4 align-items-start">
+              {/* Gambar Produk */}
+              <div className="col-md-6">
+                <img
+                  src={productDetail.imgUrl}
+                  alt={productDetail.name}
+                  className="img-fluid product-image rounded shadow-sm w-100"
+                />
               </div>
-              <ul className="list-group w-75">
-                <li className="list-group-item d-flex justify-content-between align-items-center col-md-3 px-3">
-                  <strong>Stok:</strong>
-                  <span>{productDetail.stock}</span>
-                </li>
-              </ul>
+              {/* Detail Produk */}
+              <div className="col-md-6">
+                <h2 className="fw-bold mb-2 text-light">
+                  {productDetail.name}
+                </h2>
+                {/* <p className="text-muted mb-1"> */}
+                <p className="badge bg-secondary mb-2">
+                  Category: {productDetail.category.name}
+                </p>
+                <p className="fs-4 text-success">
+                  {productDetail.price.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                  })}
+                </p>
+                <div
+                  style={{ maxHeight: "300px", overflow: "auto" }}
+                  className="product-description-box border rounded p-3 text-light"
+                >
+                  <p className="small mb-0">{productDetail.description}</p>
+                </div>
+                <ul className="list-group w-75 mt-3">
+                  <li className="list-group-item d-flex justify-content-between align-items-center col-md-4 px-3 bg-dark text-light">
+                    <strong>Stok:</strong>
+                    <span>{productDetail.stock}</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
+        </main>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 }

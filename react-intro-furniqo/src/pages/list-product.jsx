@@ -1,5 +1,6 @@
+import Footer from "../components/footer";
 import Sidebar from "../components/sidebar";
-import { useState } from "react";
+// import { useState } from "react";
 
 export default function ListProduct() {
   return (
@@ -11,7 +12,7 @@ export default function ListProduct() {
             <h1 className="mb-2">List Product</h1>
             <div className="d-flex justify-content-end mb-2">
               <button
-                className="btn btn-success d-flex align-items-center gap-2 shadow-sm"
+                className="btn btn-warning d-flex align-items-center gap-2 shadow-sm"
                 data-bs-toggle="modal"
                 data-bs-target="#addModal"
               >
@@ -19,8 +20,8 @@ export default function ListProduct() {
                 Add Product
               </button>
             </div>
-            <table className="table caption-top align-middle">
-              <thead>
+            <table className="table table-hover align-middle bg-dark text-light shadow-sm rounded overflow-hidden">
+              <thead className="custom-thead">
                 <tr>
                   <th scope="col" width="180px">
                     Image
