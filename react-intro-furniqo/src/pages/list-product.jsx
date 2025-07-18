@@ -5,7 +5,7 @@ import { api } from "../helpers/http-client";
 import ProductForm from "../components/product-form";
 // import { useState } from "react";
 
-export default function ListProduct() {
+export default function ListProduct({ onSuccess }) {
   const [products, setProducts] = useState([]);
 
   async function fetchData() {
@@ -129,7 +129,7 @@ export default function ListProduct() {
           </div>
         </div>
       </div>
-      <ProductForm />
+      <ProductForm onSuccess={fetchData} />
       {/* Modal: Edit Product */}
       <div
         className="modal fade"

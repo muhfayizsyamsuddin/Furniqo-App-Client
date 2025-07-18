@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { api } from "../helpers/http-client";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
+// import {Modal}
 
-export default function ProductForm() {
-  const navigate = useNavigate();
+export default function ProductForm({ onSuccess }) {
+  //   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -29,7 +30,13 @@ export default function ProductForm() {
           },
         }
       );
-      navigate("/products");
+      if (onSuccess) {
+        onSuccess();
+      }
+      const modalElement = document.getElementById("addModal");
+      const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+      modal.hide();
+      //   navigate("/products");
     } catch (err) {
       console.log("🚀 ~ ProductForm ~ err:", err.response.data || err.message);
     }
