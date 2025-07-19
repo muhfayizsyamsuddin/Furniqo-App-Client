@@ -5,11 +5,13 @@ import { api } from "../helpers/http-client";
 import ProductForm from "../components/product-form";
 // import { useParams } from "react-router";
 // import { useState } from "react";
+/* global bootstrap */
 
 export default function ListProduct() {
   // const { id } = useParams();
   const [products, setProducts] = useState([]);
   const [editProduct, setEditProduct] = useState(null);
+  const [deleteProduct, setDeleteProduct] = useState(null);
 
   async function fetchData() {
     try {
@@ -26,6 +28,24 @@ export default function ListProduct() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleDelete = async (productId) => {
+    try {
+      await api.delete(`/apis/products/products/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+      fetchData();
+      setDeleteProduct(null);
+      const modalElement = document.getElementById("deleteModal");
+      const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+      modal.hide();
+    } catch (err) {
+      console.log("🚀 ~ handleDelete ~ err:", err);
+    }
+  };
+
   return (
     <div className="d-flex">
       <div className="row">
@@ -81,7 +101,12 @@ export default function ListProduct() {
                         {product.description}
                       </div>
                     </td>
-                    <td>{product.price}</td>
+                    <td>
+                      {product.price.toLocaleString("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                      })}
+                    </td>
                     <td>{product.stock}</td>
                     <td>{product.category.name}</td>
                     <td>{product.author.username}</td>
@@ -119,6 +144,7 @@ export default function ListProduct() {
                           data-bs-toggle="modal"
                           data-bs-target="#deleteModal"
                           title="Delete"
+                          onClick={() => setDeleteProduct(product)}
                         >
                           <span className="material-symbols-outlined">
                             delete
@@ -142,112 +168,6 @@ export default function ListProduct() {
           setEditProduct(null);
         }}
       />
-      {/* <div
-        className="modal fade"
-        id="editModal"
-        tabIndex={-1}
-        aria-labelledby="editModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-lg">
-          <div className="modal-content">
-            <form id="form-edit-product">
-              <div className="modal-header">
-                <h5 className="modal-title">Edit Product</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                />
-              </div>
-              <div className="modal-body">
-                <div className="mb-3">
-                  <label htmlFor="edit-product-name" className="form-label">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="edit-product-name"
-                    required=""
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="edit-product-category" className="form-label">
-                    Category
-                  </label>
-                  <select
-                    className="form-select"
-                    id="edit-product-category"
-                    required=""
-                  >
-                    <option value="" disabled>
-                      -- Select Category --
-                    </option>
-                    <option>Office</option>
-                    <option>Workspace</option>
-                    <option>Storage</option>
-                  </select>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="edit-product-desc" className="form-label">
-                    Description
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="edit-product-desc"
-                    required=""
-                  />
-                </div>
-                <div className="row">
-                  <div className="col-md-6 mb-3">
-                    <label htmlFor="edit-product-stock" className="form-label">
-                      Stock
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="edit-product-stock"
-                      required=""
-                    />
-                  </div>
-                  <div className="col-md-6 mb-3">
-                    <label htmlFor="edit-product-price" className="form-label">
-                      Price
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="edit-product-price"
-                      required=""
-                    />
-                  </div>
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="edit-product-image" className="form-label">
-                    Image URL
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="edit-product-image"
-                  />
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button className="btn btn-secondary" data-bs-dismiss="modal">
-                  Cancel
-                </button>
-                <button className="btn btn-primary" type="submit">
-                  Update Product
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div> */}
       {/* Modal: Upload Image */}
       <div
         className="modal fade"
@@ -325,13 +245,23 @@ export default function ListProduct() {
               />
             </div>
             <div className="modal-body">
-              Are you sure you want to delete this product?
+              Are you sure you want to delete{" "}
+              <strong>{deleteProduct?.name || "this product"}</strong> ?
             </div>
             <div className="modal-footer">
               <button className="btn btn-secondary" data-bs-dismiss="modal">
                 Cancel
               </button>
-              <button className="btn btn-danger">Delete</button>
+              <button
+                onClick={() => {
+                  if (deleteProduct.id) {
+                    handleDelete(deleteProduct.id);
+                  }
+                }}
+                className="btn btn-danger"
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>
