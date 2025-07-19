@@ -51,7 +51,7 @@ function Sidebar() {
         className="sidebar d-flex flex-column p-4 bg-dark text-light shadow-sm"
         style={{ minHeight: "100vh", width: "250px" }}
       >
-        <div className="text-center mb-4">
+        <div className="text-center mb-4 mt-3">
           <Link to="/">
             <img
               src="/furniqo-high-resolution-logo-transparent.png"
@@ -61,7 +61,7 @@ function Sidebar() {
           </Link>
         </div>
         {/* Search */}
-        <div className="mt-5">
+        <div className="mt-4">
           <input
             type="text"
             className="form-control search-input"

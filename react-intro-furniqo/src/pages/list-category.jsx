@@ -1,35 +1,48 @@
+import { useEffect, useState } from "react";
 import Footer from "../components/footer";
 import Sidebar from "../components/sidebar";
+import { api } from "../helpers/http-client";
 
 export default function ListCategory() {
+  const [categories, setCategories] = useState([]);
+
+  async function fetchData() {
+    try {
+      const response = await api.get("/apis/products/categories", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+      setCategories(response.data.data);
+    } catch (err) {
+      console.log("🚀 ~ fetchData ~ err:", err);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="d-flex min-vh-100">
       {/* <div className="row"> */}
       <div className="main-content flex-grow-1 p-4">
         <h1 className="text-light mb-2">List of Categories</h1>
-        <div className="container">
+        <div className="container mt-4 ms-5">
           <div className="col-6 table-responsive">
-            <table className="table table-dark tabel-hover caption-top align-middle rounded overflow-hidden">
-              <caption className="text-light">List of category</caption>
+            <table className="table table-dark table-hover caption-top align-middle rounded overflow-hidden">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
+                  <th scope="col">No.</th>
                   <th scope="col">Name</th>
                 </tr>
               </thead>
               <tbody id="table-product">
-                <tr>
-                  <th scope="row">1</th>
-                  <td>Office Desk</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>Office Chair</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>Bookshelf Rack</td>
-                </tr>
+                {categories.map((category, i) => (
+                  <tr key={category.id}>
+                    <th scope="row">{i + 1}</th>
+                    <td>{category.name}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
