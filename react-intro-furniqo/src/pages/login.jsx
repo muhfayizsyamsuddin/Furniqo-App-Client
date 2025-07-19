@@ -19,9 +19,11 @@ export default function Login() {
     try {
       const response = await api.post("/apis/auth/login", { email, password });
       const access_token = response.data.data.token;
+      const role = response.data.data.user.role;
       console.log("🚀 ~ handleLogin ~ access_token:", access_token);
 
       localStorage.setItem("access_token", access_token);
+      localStorage.setItem("role", role);
       SuccessAlert("Login successfully!");
       navigate("/products");
     } catch (err) {

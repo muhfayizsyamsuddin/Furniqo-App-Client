@@ -8,6 +8,8 @@ function Sidebar({ search, setSearch }) {
   const location = useLocation();
 
   const token = localStorage.getItem("access_token");
+  const role = localStorage.getItem("role");
+  const showSearch = location.pathname === "/pub/products";
 
   const handleLogout = () => {
     console.log("🚀 ~ handleLogout ~ access_token:", "access_token");
@@ -26,11 +28,15 @@ function Sidebar({ search, setSearch }) {
           icon: "bi-tags",
           label: "Category List",
         },
-        {
-          to: "/add-user",
-          icon: "bi-person-plus",
-          label: "Create Staff",
-        },
+        ...(role === "admin" || role === "Admin"
+          ? [
+              {
+                to: "/add-user",
+                icon: "bi-person-plus",
+                label: "Create Staff",
+              },
+            ]
+          : []),
       ]
     : [
         {
@@ -51,7 +57,7 @@ function Sidebar({ search, setSearch }) {
         className="sidebar d-flex flex-column p-4 bg-dark text-light shadow-sm"
         style={{ minHeight: "100vh", width: "250px" }}
       >
-        <div className="text-center mb-4 mt-3">
+        <div className="text-center mb-4 mt-4">
           <Link to="/">
             <img
               src="/furniqo-high-resolution-logo-transparent.png"
@@ -61,17 +67,19 @@ function Sidebar({ search, setSearch }) {
           </Link>
         </div>
         {/* Search */}
-        <div className="mt-4">
-          <input
-            type="text"
-            className="form-control search-input"
-            placeholder="Search product..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
+        {showSearch && (
+          <div className="mt-4">
+            <input
+              type="text"
+              className="form-control search-input"
+              placeholder="Search product..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+        )}
         {/* Navigation */}
-        <nav className="nav flex-column mt-3">
+        <nav className="nav flex-column mt-4">
           {navMenus.map((menu, i) => {
             const isActive = location.pathname === menu.to;
             return (
