@@ -1,26 +1,36 @@
-function Pagination() {
+function Pagination({ meta, onPageChange }) {
+  const { page, totalPages, hasPrev, hasNext } = meta;
+  const pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(i);
+  }
   return (
     <>
       {/* Pagination */}
       <nav className="mt-4">
         <ul className="pagination justify-content-end">
-          <li className="page-item disabled">
-            <a className="page-link">Previous</a>
+          <li className={`page-item ${!hasPrev ? "disabled" : ""}`}>
+            <button
+              className="page-link"
+              onClick={() => onPageChange(page - 1)}
+            >
+              Previous
+            </button>
           </li>
-          <li className="page-item active">
-            <a className="page-link" href="#">
-              1
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              2
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
+          {pages.map((p) => (
+            <li key={p} className={`page-item ${p === page ? "active" : ""}`}>
+              <button className="page-link" onClick={() => onPageChange(p)}>
+                {p}
+              </button>
+            </li>
+          ))}
+          <li className={`page-item ${!hasNext ? "disabled" : ""}`}>
+            <button
+              className="page-link"
+              onClick={() => onPageChange(page + 1)}
+            >
               Next
-            </a>
+            </button>
           </li>
         </ul>
       </nav>

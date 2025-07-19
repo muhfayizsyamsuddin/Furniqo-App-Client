@@ -3,6 +3,8 @@ import Footer from "../components/footer";
 import Sidebar from "../components/sidebar";
 import { api } from "../helpers/http-client";
 import ProductForm from "../components/product-form";
+import Swal from "sweetalert2";
+import { SuccessAlert, ErrorAlert } from "../helpers/alert";
 // import { useParams } from "react-router";
 // import { useState } from "react";
 /* global bootstrap */
@@ -25,6 +27,13 @@ export default function ListProduct() {
       setProducts(response.data.data);
     } catch (err) {
       console.log("🚀 ~ fetchData ~ err:", err);
+      const errors = err.response.data.message || "Something went wrong!";
+
+      Swal.fire({
+        icon: "error",
+        title: "Failed to add staff!",
+        html: errors,
+      });
     }
   }
   useEffect(() => {
@@ -43,8 +52,12 @@ export default function ListProduct() {
       const modalElement = document.getElementById("deleteModal");
       const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
       modal.hide();
+      SuccessAlert("Product deleted seccesfully");
     } catch (err) {
       console.log("🚀 ~ handleDelete ~ err:", err);
+      const errors =
+        err.response?.data?.message || err.message || "Something went wrong!";
+      ErrorAlert(errors, "Failed to delete product!");
     }
   };
 
@@ -65,8 +78,13 @@ export default function ListProduct() {
       const modalElement = document.getElementById("uploadModal");
       const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
       modal.hide();
+      SuccessAlert("Image uploaded seccesfully");
     } catch (err) {
       console.log("🚀 ~ handleUploadImageProduct ~ err:", err);
+      const errors =
+        err.response?.data?.message || err.message || "Something went wrong!";
+
+      ErrorAlert(errors, "Failed to upload image!");
     }
   };
 

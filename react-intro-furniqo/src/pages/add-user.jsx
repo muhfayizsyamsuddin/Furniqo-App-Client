@@ -2,6 +2,9 @@ import { useNavigate } from "react-router";
 import Footer from "../components/footer";
 import { api } from "../helpers/http-client";
 import { useState } from "react";
+import Swal from "sweetalert2";
+import Button from "../components/button";
+import { SuccessAlert, ErrorAlert } from "../helpers/alert";
 
 export default function AddUser() {
   const navigate = useNavigate();
@@ -24,10 +27,14 @@ export default function AddUser() {
           },
         }
       );
-      console.log(response);
+      SuccessAlert("Staff has been successfully added!");
       navigate("/products");
+      console.log(response);
     } catch (err) {
       console.log("🚀 ~ handleAddUser ~ err:", err);
+      const errors =
+        err.response?.data?.message || err.message || "Something went wrong!";
+      ErrorAlert(errors, "Failed to add staff!");
     }
   };
   return (
@@ -123,12 +130,18 @@ export default function AddUser() {
               />
             </div>
             <div className="col-12 text-end mt-3">
-              <button
+              <Button
+                type="submit"
+                className="btn btn-warning px-4 py-2 shadow-sm"
+              >
+                Create Staff
+              </Button>
+              {/* <button
                 type="submit"
                 className="btn btn-warning px-4 py-2 shadow-sm"
               >
                 Add User
-              </button>
+              </button> */}
             </div>
           </form>
         </div>

@@ -3,7 +3,7 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import "../App.css";
 
-function Sidebar() {
+function Sidebar({ search, setSearch }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -66,7 +66,8 @@ function Sidebar() {
             type="text"
             className="form-control search-input"
             placeholder="Search product..."
-            //   onChange={}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
         {/* Navigation */}

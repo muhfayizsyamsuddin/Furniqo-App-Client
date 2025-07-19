@@ -6,43 +6,76 @@ import Footer from "../components/footer";
 import { useState } from "react";
 import axios from "axios";
 
-export default function HomePage() {
-  const [products, setProducts] = useState([]);
-  //   const [searchText, setSearchText] = useState("");
+const Base_URL = "https://p2.khanz1.dev";
 
-  async function fetchData() {
+export default function HomePage() {
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("ASC");
+  const [page, setPage] = useState(1);
+  const [selectCategory, setSelectCategory] = useState("");
+
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [meta, setMeta] = useState({
+    page: 1,
+    limit: 10,
+    total: 195,
+    totalPages: 20,
+    hasNext: true,
+    hasPrev: false,
+  });
+  useEffect(() => {
+    async function fetchProduct() {
+      const url = new URL(Base_URL);
+      url.pathname = "/apis/pub/products/products";
+      if (search) {
+        url.searchParams.append("q", search);
+      }
+      if (selectCategory) {
+        // console.log("categoryId", selectCategory);
+
+        url.searchParams.append("categoryId", Number(selectCategory));
+      }
+      url.searchParams.append("page", page.toString());
+      url.searchParams.append("sort", sort);
+      console.log("url fetch:", url.toString());
+      console.log("kategori yg dipilh::", selectCategory);
+
+      try {
+        const { data } = await axios.get(url.toString());
+        // console.log("produk yg diterima:", response.data.data);
+        setProducts(data.data);
+        // const rawData = response.data.data;
+
+        // const filtered = selectCategory
+        //   ? rawData.filter((item) => item.category?.id == selectCategory)
+        //   : rawData;
+
+        // setProducts(filtered);
+        setMeta(data.meta);
+        // console.log("🚀 ~ fetchProduct ~ response:", response.data.data);
+      } catch (err) {
+        console.log("🚀 ~ fetchProduct ~ err:", err);
+      }
+    }
+    fetchProduct();
+  }, [search, sort, page, selectCategory]);
+
+  async function fetchCategories() {
+    const url = new URL(Base_URL);
+    url.pathname = "/apis/pub/products/categories";
     try {
-      const response = await axios.get(
-        "https://p2.khanz1.dev/apis/pub/products/products"
-        // + searchText
-      );
-      console.log("🚀 ~ useEffect ~ response:", response.data.data);
-      setProducts(response.data.data);
+      const response = await axios.get(url.toString());
+      setCategories(response.data.data);
+      // console.log("🚀 ~ fetchProduct ~ response:", response.data.data);
     } catch (err) {
-      console.log("🚀 ~ fetchData ~ err:", err);
+      console.log("🚀 ~ fetchCategories ~ err:", err);
     }
   }
 
   useEffect(() => {
-    fetchData();
+    fetchCategories();
   }, []);
-  const categories = ["All", "Office Furniture", "Living Room", "Bedroom"];
-
-  //   const [sortProducts, setSortProducts] = useState("");
-
-  //   const [selectedCategory, setSelectedCategory] = useState("All");
-
-  //   const filteredProduct = products
-  //     .filter((item) =>
-  //       selectedCategory === "All" ? true : item.category === selectedCategory
-  //     )
-  //     .sort((a, b) => {
-  //       return sortProducts === "price-asc"
-  //         ? new Date(b.createdAt) - new Date(a.createdAt)
-  //         : sortProducts === "price-desc"
-  //         ? new Date(a.createdAt) - new Date(b.createdAt)
-  //         : 0;
-  //     });
 
   const listProduct = products.map((item, i) => (
     <div className="col-md-3 mb-3" key={i}>
@@ -59,20 +92,24 @@ export default function HomePage() {
   const listFilterCategory = categories.map((category, i) => (
     <li key={i}>
       <button
-        className={`dropdown-item`}
-        // onClick={() => setSelectedCategory(category)}
+        className={`dropdown-item ${
+          selectCategory === category.id ? "active" : ""
+        }`}
+        onClick={() => {
+          console.log("klik categori", category.name, "id", category.id);
+
+          setSelectCategory(String(category.id));
+          setPage(1);
+        }}
       >
-        {category}
+        {category.name}
       </button>
     </li>
   ));
 
   return (
     <div className="d-flex">
-      <Sidebar
-      // value={searchText}
-      // onChange={(e) => setSearchText(e.target.value)}
-      />
+      <Sidebar search={search} setSearch={setSearch} />
       <div className="main-content flex-grow-1 p-4">
         <div className="container my-4">
           <h2 className="mb-4">Produk</h2>
@@ -83,9 +120,25 @@ export default function HomePage() {
               type="button"
               data-bs-toggle="dropdown"
             >
-              Filter by category
+              {selectCategory
+                ? categories.find((cat) => cat.id === selectCategory)?.name ||
+                  "Filter by category"
+                : "Filter by category"}
             </button>
             <ul className="dropdown-menu dropdown-menu-dark">
+              <li>
+                <button
+                  className={`dropdown-item ${
+                    selectCategory === "" ? "active" : ""
+                  }`}
+                  onClick={() => {
+                    setSelectCategory("");
+                    setPage(1);
+                  }}
+                >
+                  All Categories
+                </button>
+              </li>
               {listFilterCategory}
             </ul>
           </div>
@@ -95,15 +148,20 @@ export default function HomePage() {
           <div className="col-md-6">
             <select
               className="form-select"
-              //   onChange={(e) => setSortProducts(e.target.value)}
+              value={sort}
+              onChange={(e) => {
+                setSort(e.target.value);
+                setPage(1);
+              }}
             >
               {/* <option value="">Sort by</option> */}
-              <option value="price-asc">Latest</option>
-              <option value="price-desc">Oldest</option>
+              <option value="ASC">Oldest</option>
+              <option value="DESC">Latest</option>
             </select>
           </div>
         </div>
         <div className="row">{listProduct}</div>
+        <Pagination meta={meta} onPageChange={setPage} />
         <Footer />
       </div>
     </div>

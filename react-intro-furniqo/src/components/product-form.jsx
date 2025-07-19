@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../helpers/http-client";
+import Swal from "sweetalert2";
+import { SuccessAlert, ErrorAlert } from "../helpers/alert";
 // import { useNavigate } from "react-router";
 // import {Modal}
 /* global bootstrap */
@@ -12,9 +14,11 @@ export default function ProductForm({ editProduct, type, onSuccess }) {
   const [stock, setStock] = useState("");
   const [imgUrl, setImgUrl] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [categories, setCategories] = useState([]);
   //   const { id } = useParams();
 
   useEffect(() => {
+    fetchCategories();
     if (type === "edit" && editProduct) {
       setName(editProduct.name);
       setDescription(editProduct.description);
@@ -70,10 +74,31 @@ export default function ProductForm({ editProduct, type, onSuccess }) {
       const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
       modal.hide();
       //   navigate("/products");
+      SuccessAlert(type === "edit" ? "Product updated!" : "Product added!");
     } catch (err) {
       console.log("🚀 ~ ProductForm ~ err:", err.response.data || err.message);
+      const errors = err.response.data.message || "Something went wrong!";
+
+      ErrorAlert(errors, "Failed to update/add product!");
     }
   };
+  async function fetchCategories() {
+    try {
+      const response = await api.get("/apis/products/categories", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+      setCategories(response.data.data);
+      console.log(response.data.data);
+    } catch (err) {
+      console.log("🚀 ~ fetchCategories ~ err:", err);
+      const errors =
+        err.response?.data?.message || err.message || "Something went wrong!";
+
+      ErrorAlert(errors);
+    }
+  }
   return (
     <div
       className="modal fade"
@@ -179,9 +204,11 @@ export default function ProductForm({ editProduct, type, onSuccess }) {
                   onChange={(e) => setCategoryId(e.target.value)}
                 >
                   <option value="">Select Category</option>
-                  <option value={1}>Office</option>
-                  <option value={2}>Workspace</option>
-                  <option value={3}>Storage</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>

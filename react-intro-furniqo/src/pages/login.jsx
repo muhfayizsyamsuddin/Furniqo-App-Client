@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router";
 import { api } from "../helpers/http-client";
+import Button from "../components/button";
+import { SuccessAlert, ErrorAlert } from "../helpers/alert";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -20,9 +22,13 @@ export default function Login() {
       console.log("🚀 ~ handleLogin ~ access_token:", access_token);
 
       localStorage.setItem("access_token", access_token);
+      SuccessAlert("Login successfully!");
       navigate("/products");
     } catch (err) {
       console.log("🚀 ~ handleLogin ~ err:", err);
+      const errors =
+        err.response?.data?.message || err.message || "Something went wrong!";
+      ErrorAlert(errors, "Login Failed!");
     }
   };
   const token = localStorage.getItem("access_token");
@@ -75,17 +81,19 @@ export default function Login() {
               required=""
             />
           </div>
-          <button
+          <Button
             type="submit"
             className="btn btn-warning w-100 mt-3 btn-login"
           >
             <i className="bi bi-box-arrow-in-right" /> Login
-          </button>
+          </Button>
+          {/* <button
+            type="submit"
+            className="btn btn-warning w-100 mt-3 btn-login"
+          >
+            <i className="bi bi-box-arrow-in-right" /> Login
+          </button> */}
         </form>
-        {/* <p className="text-center mt-3 text-light">
-          Don't have an account?
-          <Link to="/pub/products">Register now</Link>
-        </p> */}
       </div>
     </div>
   );

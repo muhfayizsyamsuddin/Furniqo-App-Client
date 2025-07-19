@@ -1,10 +1,17 @@
-export default function Button() {
+import React from "react";
+
+export default function Button({
+  children,
+  type = "button",
+  className = "btn btn-warning",
+  icon,
+  onClick,
+  ...props
+}) {
   return (
-    <button
-      className="btn btn-primary"
-      onClick={() => {
-        alert("Are you sure?");
-      }}
-    ></button>
+    <button type={type} className={className} onClick={onClick} {...props}>
+      {icon && <i className={`${icon} me-2`} />}
+      {children}
+    </button>
   );
 }
