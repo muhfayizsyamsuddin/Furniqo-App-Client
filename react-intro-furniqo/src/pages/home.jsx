@@ -42,17 +42,17 @@ export default function HomePage() {
       console.log("kategori yg dipilh::", selectCategory);
 
       try {
-        const { data } = await axios.get(url.toString());
+        const response = await axios.get(url.toString());
         // console.log("produk yg diterima:", response.data.data);
-        setProducts(data.data);
-        // const rawData = response.data.data;
+        // setProducts(data.data);
+        const rawData = response.data.data;
 
-        // const filtered = selectCategory
-        //   ? rawData.filter((item) => item.category?.id == selectCategory)
-        //   : rawData;
+        const filtered = selectCategory
+          ? rawData.filter((item) => item.category?.id == selectCategory)
+          : rawData;
 
-        // setProducts(filtered);
-        setMeta(data.meta);
+        setProducts(filtered);
+        setMeta(response.data.meta);
         // console.log("🚀 ~ fetchProduct ~ response:", response.data.data);
       } catch (err) {
         console.log("🚀 ~ fetchProduct ~ err:", err);
