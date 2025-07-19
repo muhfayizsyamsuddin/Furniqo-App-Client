@@ -112,7 +112,7 @@ export default function HomePage() {
       <Sidebar search={search} setSearch={setSearch} />
       <div className="main-content flex-grow-1 p-4">
         <div className="container my-4">
-          <h2 className="mb-4">Produk</h2>
+          <h2 className="mb-4">Product</h2>
           {/* Kategori */}
           <div className="dropdown mb-4">
             <button
