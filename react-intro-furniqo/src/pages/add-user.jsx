@@ -1,6 +1,35 @@
+import { useNavigate } from "react-router";
 import Footer from "../components/footer";
+import { api } from "../helpers/http-client";
+import { useState } from "react";
 
 export default function AddUser() {
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [address, setAddress] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
+  const handleAddUser = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await api.post(
+        "/apis/auth/add-user",
+        { email, password, username, phoneNumber, address },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+      console.log(response);
+      navigate("/products");
+    } catch (err) {
+      console.log("🚀 ~ handleAddUser ~ err:", err);
+    }
+  };
   return (
     <div className="d-flex">
       {/* table */}
@@ -11,9 +40,9 @@ export default function AddUser() {
         >
           <h2 className="mb-4 border-bottom pb-2">
             <i className="bi bi-person-plus me-2" />
-            Add New User
+            Create Staff
           </h2>
-          <form className="row g-3" id="form-add-user">
+          <form onSubmit={handleAddUser} className="row g-3" id="form-add-user">
             <div className="col-md-6">
               <label htmlFor="inputEmail4" className="form-label">
                 Email
@@ -26,6 +55,8 @@ export default function AddUser() {
                 autoComplete="email"
                 placeholder="email@example.com"
                 required=""
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="col-md-6">
@@ -40,6 +71,8 @@ export default function AddUser() {
                 autoComplete="new-password"
                 placeholder="********"
                 required=""
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="col-12">
@@ -54,6 +87,8 @@ export default function AddUser() {
                 autoComplete="username"
                 placeholder="example"
                 required=""
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div className="col-12">
@@ -67,6 +102,8 @@ export default function AddUser() {
                 name="address"
                 autoComplete="address"
                 placeholder="Apartment, studio, or floor"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
               />
             </div>
             <div className="col-md-6">
@@ -81,6 +118,8 @@ export default function AddUser() {
                 autoComplete="tel"
                 placeholder="+62 -"
                 required=""
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
             <div className="col-12 text-end mt-3">
