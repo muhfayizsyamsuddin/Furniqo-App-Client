@@ -12,6 +12,8 @@ export default function ListProduct() {
   const [products, setProducts] = useState([]);
   const [editProduct, setEditProduct] = useState(null);
   const [deleteProduct, setDeleteProduct] = useState(null);
+  const [uploadImage, setUploadImage] = useState(null);
+  const [uploadProduct, setUploadProduct] = useState(null);
 
   async function fetchData() {
     try {
@@ -43,6 +45,28 @@ export default function ListProduct() {
       modal.hide();
     } catch (err) {
       console.log("🚀 ~ handleDelete ~ err:", err);
+    }
+  };
+
+  const handleUploadImage = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("file", uploadImage);
+      await api.patch(`/apis/products/products/${uploadProduct.id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+      fetchData();
+      setUploadImage(null);
+      setUploadProduct(null);
+      const modalElement = document.getElementById("uploadModal");
+      const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+      modal.hide();
+    } catch (err) {
+      console.log("🚀 ~ handleUploadImageProduct ~ err:", err);
     }
   };
 
@@ -132,6 +156,7 @@ export default function ListProduct() {
                           data-bs-toggle="modal"
                           data-bs-target="#uploadModal"
                           title="Upload Image"
+                          onClick={() => setUploadProduct(product)}
                         >
                           <span className="material-symbols-outlined">
                             image
@@ -178,7 +203,7 @@ export default function ListProduct() {
       >
         <div className="modal-dialog">
           <div className="modal-content">
-            <form>
+            <form onSubmit={handleUploadImage}>
               <div className="modal-header">
                 <h5 className="modal-title" id="uploadModalLabel">
                   Upload Product Image
@@ -198,10 +223,27 @@ export default function ListProduct() {
                     type="text"
                     className="form-control"
                     id="upload-product-name"
-                    placeholder="Enter product name"
-                    required=""
+                    value={uploadProduct?.name || ""}
+                    readOnly
                   />
                 </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Current Image</label>
+                  <div>
+                    {uploadProduct?.imgUrl ? (
+                      <img
+                        src={uploadProduct.imgUrl}
+                        alt="Current"
+                        className="img-fluid rounded"
+                        style={{ maxWidth: "200px", maxHeight: "200px" }}
+                      />
+                    ) : (
+                      <p>No image</p>
+                    )}
+                  </div>
+                </div>
+
                 <div className="mb-3">
                   <label htmlFor="upload-product-image" className="form-label">
                     Upload Image
@@ -211,6 +253,7 @@ export default function ListProduct() {
                     className="form-control"
                     id="upload-product-image"
                     required=""
+                    onChange={(e) => setUploadImage(e.target.files[0])}
                   />
                 </div>
               </div>

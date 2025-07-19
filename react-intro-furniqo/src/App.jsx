@@ -13,6 +13,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AuthenticatedLayout />}>
+          <Route index element={<ListProduct />} />
           <Route path="categories" element={<ListCategory />} />
           <Route path="products" element={<ListProduct />} />
           {/* <Route path="products/:id" element={<Detail />} /> */}
