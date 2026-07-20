@@ -24,9 +24,9 @@ export default function ProductForm({ editProduct, type, onSuccess }) {
       setDescription(editProduct.description);
       setPrice(editProduct.price);
       setStock(editProduct.stock);
-      setImgUrl(editProduct.imgUrl || "");
+      setImgUrl(editProduct.imageUrl || editProduct.imgUrl || "");
       setCategoryId(editProduct.categoryId);
-      console.log("editPoduct", editProduct);
+      // console.log("editPoduct", editProduct);
     } else {
       setName("");
       setDescription("");
@@ -45,12 +45,12 @@ export default function ProductForm({ editProduct, type, onSuccess }) {
         description,
         price: Number(price),
         stock: Number(stock),
-        imgUrl,
+        imageUrl: imgUrl,
         categoryId: Number(categoryId),
       };
       if (type === "edit") {
         await api.put(
-          `/apis/products/products/${editProduct.id}`,
+          `/products/${editProduct.id}`,
           dataProduct,
           {
             headers: {
@@ -59,7 +59,7 @@ export default function ProductForm({ editProduct, type, onSuccess }) {
           }
         );
       } else {
-        await api.post("/apis/products/products", dataProduct, {
+        await api.post("/products", dataProduct, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -77,20 +77,18 @@ export default function ProductForm({ editProduct, type, onSuccess }) {
       SuccessAlert(type === "edit" ? "Product updated!" : "Product added!");
     } catch (err) {
       console.log("🚀 ~ ProductForm ~ err:", err.response.data || err.message);
-      const errors = err.response.data.message || "Something went wrong!";
+      const errors = err.response?.data?.message || err.message || "Something went wrong!";
 
       ErrorAlert(errors, "Failed to update/add product!");
     }
   };
   async function fetchCategories() {
     try {
-      const response = await api.get("/apis/products/categories", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
-      setCategories(response.data.data);
-      console.log(response.data.data);
+      const response = await api.get("/categories");
+      // setCategories(response.data.data);
+
+      const resultData = response.data?.data || response.data || [];
+      setCategories(Array.isArray(resultData) ? resultData : []);
     } catch (err) {
       console.log("🚀 ~ fetchCategories ~ err:", err);
       const errors =
@@ -206,7 +204,7 @@ export default function ProductForm({ editProduct, type, onSuccess }) {
                   <option value="">Select Category</option>
                   {categories.map((category) => (
                     <option key={category.id} value={category.id}>
-                      {category.name}
+                      {category?.name}
                     </option>
                   ))}
                 </select>

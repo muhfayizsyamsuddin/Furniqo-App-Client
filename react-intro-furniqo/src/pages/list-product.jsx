@@ -19,12 +19,12 @@ export default function ListProduct() {
 
   async function fetchData() {
     try {
-      const response = await api.get("/apis/products/products", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
-      setProducts(response.data.data);
+      const response = await api.get("/products");
+      // setProducts(response.data.data);
+
+      const dataList = response.data?.data || response.data || [];
+      // console.log("🚀 ~ DATA PRODUK DARI BACKEND:", dataList);
+      setProducts(Array.isArray(dataList) ? dataList : []);
     } catch (err) {
       console.log("🚀 ~ fetchData ~ err:", err);
       const errors = err.response.data.message || "Something went wrong!";
@@ -42,11 +42,7 @@ export default function ListProduct() {
 
   const handleDelete = async (productId) => {
     try {
-      await api.delete(`/apis/products/products/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
+      await api.delete(`/products/${productId}`);
       fetchData();
       setDeleteProduct(null);
       const modalElement = document.getElementById("deleteModal");
@@ -66,10 +62,9 @@ export default function ListProduct() {
     try {
       const formData = new FormData();
       formData.append("file", uploadImage);
-      await api.patch(`/apis/products/products/${uploadProduct.id}`, formData, {
+      await api.patch(`/products/${uploadProduct.id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       });
       fetchData();
@@ -124,7 +119,7 @@ export default function ListProduct() {
                   <tr key={product.id}>
                     <td>
                       <img
-                        src={product.imgUrl}
+                        src={product.imageUrl}
                         className="img-fluid"
                         style={{ width: 150, height: "auto" }}
                       />
@@ -150,8 +145,8 @@ export default function ListProduct() {
                       })}
                     </td>
                     <td>{product.stock}</td>
-                    <td>{product.category.name}</td>
-                    <td>{product.author.username}</td>
+                    <td>{product.Category?.name || "-"}</td>
+                    <td>{product.User?.username || "No Author"}</td>
                     <td>
                       <span className="d-flex">
                         {/* Edit */}
@@ -249,9 +244,9 @@ export default function ListProduct() {
                 <div className="mb-3">
                   <label className="form-label">Current Image</label>
                   <div>
-                    {uploadProduct?.imgUrl ? (
+                    {uploadProduct?.imageUrl ? (
                       <img
-                        src={uploadProduct.imgUrl}
+                        src={uploadProduct.imageUrl}
                         alt="Current"
                         className="img-fluid rounded"
                         style={{ maxWidth: "200px", maxHeight: "200px" }}

@@ -14,10 +14,10 @@ export default function Detail() {
     async function fetchData() {
       try {
         const response = await axios.get(
-          `https://p2.khanz1.dev/apis/pub/products/products/${id}`
+          `https://api-furniqo.faizms.com/pub/products/${id}`
         );
         console.log("🚀 ~ useEffect ~ response:", response.data.data);
-        setProductDetail(response.data.data);
+        setProductDetail(response.data.data || response.data);
       } catch (err) {
         console.log("🚀 ~ fetchData ~ err:", err);
       }
@@ -39,7 +39,7 @@ export default function Detail() {
               {/* Gambar Produk */}
               <div className="col-md-6">
                 <img
-                  src={productDetail.imgUrl}
+                  src={productDetail.imageUrl}
                   alt={productDetail.name}
                   className="img-fluid product-image rounded shadow-sm w-100"
                 />
@@ -51,7 +51,7 @@ export default function Detail() {
                 </h2>
                 {/* <p className="text-muted mb-1"> */}
                 <p className="badge bg-secondary mb-2">
-                  Category: {productDetail.category.name}
+                  Category: {productDetail.Category.name}
                 </p>
                 <p className="fs-4 text-success">
                   {productDetail.price.toLocaleString("id-ID", {

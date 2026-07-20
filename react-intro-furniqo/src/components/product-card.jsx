@@ -17,15 +17,26 @@ function ProductCard({ id, name, price, imageUrl, category }) {
           />
           <div className="card-body">
             <h5 className="card-title text-align">{name}</h5>
-            <p className="text-light">
+            {/* <p className="text-light">
               {price.toLocaleString("id-ID", {
                 style: "currency",
                 currency: "IDR",
               })}
+            </p> */}
+            <p className="text-light">
+              {price
+                ? price.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                  })
+                : "-"}
             </p>
             <div className="mb-auto">
-              <span className="badge bg-secondary mt-auto">
+              {/* <span className="badge bg-secondary mt-auto">
                 {category.name}
+              </span> */}
+              <span className="badge bg-secondary mt-auto">
+                {category?.name || "-"}
               </span>
             </div>
           </div>

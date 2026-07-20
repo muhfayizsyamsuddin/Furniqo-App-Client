@@ -8,12 +8,11 @@ export default function ListCategory() {
 
   async function fetchData() {
     try {
-      const response = await api.get("/apis/products/categories", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      });
-      setCategories(response.data.data);
+      const response = await api.get("/categories");
+      // setCategories(response.data.data);
+      
+      const dataList = response.data?.data || response.data;
+      setCategories(Array.isArray(dataList) ? dataList : []);
     } catch (err) {
       console.log("🚀 ~ fetchData ~ err:", err);
     }

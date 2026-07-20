@@ -6,7 +6,7 @@ import Footer from "../components/footer";
 import { useState } from "react";
 import axios from "axios";
 
-const Base_URL = "https://p2.khanz1.dev";
+const Base_URL = "https://api-furniqo.faizms.com";
 
 export default function HomePage() {
   const [search, setSearch] = useState("");
@@ -27,33 +27,40 @@ export default function HomePage() {
   useEffect(() => {
     async function fetchProduct() {
       const url = new URL(Base_URL);
-      url.pathname = "/apis/pub/products/products";
+      url.pathname = "/pub/products";
       if (search) {
-        url.searchParams.append("q", search);
+        // url.searchParams.append("q", search);
+        url.searchParams.append("search", search);
       }
       if (selectCategory) {
-        // console.log("categoryId", selectCategory);
 
-        url.searchParams.append("categoryId", Number(selectCategory));
+        // url.searchParams.append("categoryId", Number(selectCategory));
+        url.searchParams.append("filter", selectCategory);
       }
       url.searchParams.append("page", page.toString());
       url.searchParams.append("sort", sort);
-      console.log("url fetch:", url.toString());
-      console.log("kategori yg dipilh::", selectCategory);
+      // console.log("url fetch:", url.toString());
+      // console.log("kategori yg dipilh::", selectCategory);
 
       try {
         const response = await axios.get(url.toString());
         // console.log("produk yg diterima:", response.data.data);
         // setProducts(data.data);
         const rawData = response.data.data;
+        setProducts(rawData);
 
-        const filtered = selectCategory
-          ? rawData.filter((item) => item.category?.id == selectCategory)
-          : rawData;
+        // const filtered = selectCategory
+        //   ? rawData.filter((item) => item.category?.id == selectCategory)
+        //   : rawData;
 
-        setProducts(filtered);
-        setMeta(response.data.meta);
-        // console.log("🚀 ~ fetchProduct ~ response:", response.data.data);
+        // setProducts(filtered);
+        setMeta({
+          page: response.data.page,
+          totalPages: response.data.totalPage,
+          total: response.data.totalData,
+          hasPrev: response.data.page > 1,
+          hasNext: response.data.page < response.data.totalPage,
+        });
       } catch (err) {
         console.log("🚀 ~ fetchProduct ~ err:", err);
       }
@@ -63,10 +70,11 @@ export default function HomePage() {
 
   async function fetchCategories() {
     const url = new URL(Base_URL);
-    url.pathname = "/apis/pub/products/categories";
+    url.pathname = "/pub/categories";
     try {
       const response = await axios.get(url.toString());
-      setCategories(response.data.data);
+      // setCategories(response.data.data);
+      setCategories(response.data);
       // console.log("🚀 ~ fetchProduct ~ response:", response.data.data);
     } catch (err) {
       console.log("🚀 ~ fetchCategories ~ err:", err);
@@ -77,17 +85,31 @@ export default function HomePage() {
     fetchCategories();
   }, []);
 
-  const listProduct = products.map((item, i) => (
-    <div className="col-md-3 mb-3" key={i}>
+  // const listProduct = products.map((item, i) => (
+  //   <div className="col-md-3 mb-3" key={i}>
+  //     <ProductCard
+  //       id={item.id}
+  //       name={item.name}
+  //       price={item.price}
+  //       category={item.category}
+  //       imageUrl={item.imageUrl}
+  //     />
+  //   </div>
+  // ));
+  const listProduct = products.map((item) => {
+
+  return (
+    <div className="col-md-3 mb-3" key={item.id}>
       <ProductCard
         id={item.id}
         name={item.name}
         price={item.price}
-        category={item.category}
-        imageUrl={item.imgUrl}
+        imageUrl={item.imageUrl}
+        category={item.Category}
       />
     </div>
-  ));
+  );
+});
 
   const listFilterCategory = categories.map((category, i) => (
     <li key={i}>
@@ -96,7 +118,7 @@ export default function HomePage() {
           selectCategory === category.id ? "active" : ""
         }`}
         onClick={() => {
-          console.log("klik categori", category.name, "id", category.id);
+          // console.log("klik categori", category.name, "id", category.id);
 
           setSelectCategory(String(category.id));
           setPage(1);
@@ -106,7 +128,7 @@ export default function HomePage() {
       </button>
     </li>
   ));
-
+  // const listFilterCategory = [];
   return (
     <div className="d-flex">
       <Sidebar search={search} setSearch={setSearch} />
@@ -161,6 +183,9 @@ export default function HomePage() {
           </div>
         </div>
         <div className="row">{listProduct}</div>
+        {/* <div>
+          <pre>{JSON.stringify(meta, null, 2)}</pre>
+        </div> */}
         <Pagination meta={meta} onPageChange={setPage} />
         <Footer />
       </div>

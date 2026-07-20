@@ -19,7 +19,7 @@ export default function AddUser() {
     event.preventDefault();
     try {
       const response = await api.post(
-        "/apis/auth/add-user",
+        "/auth/add-user",
         { email, password, username, phoneNumber, address },
         {
           headers: {

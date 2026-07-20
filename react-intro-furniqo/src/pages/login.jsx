@@ -13,17 +13,30 @@ export default function Login() {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    console.log({ email, password });
+    // console.log({ email, password });
     //! kirim request ke server:
-    //* post {{BASE_URL}}/apis/auth/login {email, password}
+    //* post {{BASE_URL}}/auth/login {email, password}
     try {
-      const response = await api.post("/apis/auth/login", { email, password });
-      const access_token = response.data.data.token;
-      const role = response.data.data.user.role;
-      console.log("🚀 ~ handleLogin ~ access_token:", access_token);
+      const response = await api.post("/login", { email, password });
+      // const access_token = response.data.data.token;
+      // const role = response.data.data.user.role;
+      const access_token = 
+        response.data.access_token || 
+        response.data.token || 
+        response.data.data?.token;
+
+      const role = 
+        response.data.role || 
+        response.data.user?.role || 
+        response.data.data?.user?.role ||
+        "";
+      // console.log("🚀 ~ handleLogin ~ response:", response.data);
+      // console.log("🚀 ~ handleLogin ~ access_token:", access_token);
 
       localStorage.setItem("access_token", access_token);
-      localStorage.setItem("role", role);
+      if (role) {
+        localStorage.setItem("role", role);
+      }
       SuccessAlert("Login successfully!");
       navigate("/products");
     } catch (err) {
