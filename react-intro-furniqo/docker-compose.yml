@@ -1,3 +1,5 @@
+name: furniqo-client
+
 services:
 
   client:
